@@ -12,8 +12,8 @@ Landing page for Revalio, a property optimization and investment service.
 
 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/revalio-landing.git
-cd revalio-landing
+git clone https://github.com/yourusername/revalio.git
+cd revalio
 ```
 
 2. Install dependencies
