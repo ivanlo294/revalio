@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react'; // Import useState
+import { useForm } from 'react-hook-form'; // Import useForm
 import { Building2, Award, BarChart3, Clock, CheckCircle2, Euro, LineChart, TrendingUp, Percent, Calendar } from 'lucide-react';
 
 const LandingPage = () => {
