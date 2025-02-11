@@ -59,6 +59,22 @@ const LandingPage = () => {
                 <button className="bg-blue-600 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:bg-blue-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl transition-shadow hover:shadow-xl w-full sm:w-auto">
                   Solicita un análisis gratuito
                 </button>
+                  {/* The pop-up form (Modal) */}
+            {showForm && (
+                <div className="fixed top-0 left-0 w-full h-full bg-black/50 flex justify-center items-center z-50"> {/* z-50 for higher stacking */}
+                    <div className="bg-white p-8 rounded-lg w-full max-w-md"> {/* Added max-w-md for responsiveness */}
+                        <h2 className="text-2xl font-bold mb-4">Solicita un Análisis Gratuito</h2> {/* Added a title */}
+                        <form onSubmit={handleSubmit(onSubmit)}>
+                            <input type="email" {...register('email', { required: 'Email is required' })} placeholder="Tu Email" className="border p-2 mb-4 w-full rounded" />
+                            <textarea {...register('comment', { required: 'Comment is required' })} placeholder="Tu Comentario" className="border p-2 mb-4 w-full rounded h-24" /> {/* Added h-24 for height */}
+                            <div className="flex justify-end"> {/* Aligned buttons to the right */}
+                                <button type="submit" className="bg-blue-600 text-white px-6 py-3 rounded mr-2">Enviar</button> {/* Increased padding */}
+                                <button type="button" onClick={() => setShowForm(false)} className="bg-gray-300 px-6 py-3 rounded">Cancelar</button> {/* Increased padding */}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
               </div>
             </div>
           </div>
