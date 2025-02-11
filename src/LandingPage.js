@@ -2,6 +2,34 @@ import React from 'react';
 import { Building2, Award, BarChart3, Clock, CheckCircle2, Euro, LineChart, TrendingUp, Percent, Calendar } from 'lucide-react';
 
 const LandingPage = () => {
+
+    const [showForm, setShowForm] = useState(false);
+    const { register, handleSubmit, reset } = useForm();
+    const formSpreeEndpoint = 'https://formspree.io/f/xbldagdv'; // Replace with your Formspree endpoint
+
+    const onSubmit = async (data) => {
+        try {
+            const response = await fetch(formSpreeEndpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            if (response.ok) {
+                alert('Message sent successfully!');
+                setShowForm(false);
+                reset();
+            } else {
+                const errorData = await response.json(); // Try to get error details from Formspree
+                alert(`Error sending message: ${errorData?.error || 'Please try again.'}`); // Display a more specific error
+            }
+        } catch (error) {
+            alert('An error occurred. Please try again later.');
+        }
+    };
+  
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section - Estilo Radix */}
