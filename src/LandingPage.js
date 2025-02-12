@@ -111,13 +111,13 @@ const LandingPage = () => {
           {/* Fondo con mosaico */}
           <div className="absolute inset-0 overflow-hidden">
             {[
-              { type: 'image', top: '15%', left: '10%', size: 'h-20 w-20', src: "/images/Barcelona_Eixample.jpg" },
+              { type: 'image', top: '15%', left: '10%', size: 'h-20 w-20', src: "/Images/Barcelona_Eixample.jpg" },
               { type: 'square', top: '25%', left: '35%', size: 'h-15 w-15', color: 'bg-blue-400' },
-              { type: 'image', top: '45%', left: '15%', size: 'h-20 w-20', src: "/images/Barcelona_Puerto.jpg" },
+              { type: 'image', top: '45%', left: '15%', size: 'h-20 w-20', src: "/Images/Barcelona_Puerto.jpg" },
               { type: 'square', top: '60%', left: '25%', size: 'h-10 w-10', color: 'bg-blue-500' },
-              { type: 'image', top: '20%', left: '75%', size: 'h-19 w-19', src: "/images/Madrid_GranVia.jpg" },
+              { type: 'image', top: '20%', left: '75%', size: 'h-19 w-19', src: "/Images/Madrid_GranVia.jpg" },
               { type: 'square', top: '40%', left: '85%', size: 'h-8 w-8', color: 'bg-blue-600' },
-              { type: 'image', top: '65%', left: '80%', size: 'h-18 w-18', src: "/images/Bilbao.jpg" },
+              { type: 'image', top: '65%', left: '80%', size: 'h-18 w-18', src: "/Images/Bilbao.jpg" },
               { type: 'square', top: '30%', left: '60%', size: 'h-16 w-16', color: 'bg-gray-200' },
               { type: 'square', top: '70%', left: '45%', size: 'h-18 w-18', color: 'bg-blue-500' },
             ].map((element, index) => (
@@ -243,7 +243,7 @@ const LandingPage = () => {
               {
                 location: "Mollet del Vallès",
                 type: "Piso Residencial",
-                image: "/images/Piso_Mollet.jpg",
+                image: "/Images/Piso_Mollet.jpg",
                 initial: "90.000€",
                 investment: "25.000€",
                 final: "160.000€",
@@ -253,7 +253,7 @@ const LandingPage = () => {
               {
                 location: "Terrassa",
                 type: "Oficina → Vivienda",
-                image: "/images/Piso_Terrassa.jpg",
+                image: "/Images/Piso_Terrassa.jpg",
                 initial: "110.000€",
                 investment: "40.000€",
                 final: "220.000€",
@@ -263,7 +263,7 @@ const LandingPage = () => {
               {
                 location: "Valencia",
                 type: "División en 2 viviendas",
-                image: "/images/Piso_Valencia.jpg",
+                image: "/Images/Piso_Valencia.jpg",
                 initial: "220.000€",
                 investment: "90.000€",
                 final: "440.000€",
