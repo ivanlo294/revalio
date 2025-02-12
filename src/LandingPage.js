@@ -52,85 +52,126 @@ const LandingPage = () => {
   return (
     <div className="min-h-screen bg-white">
 
-      {/* Hero Section - Estilo Radix */}
-      <section className="relative min-h-[60vh] flex flex-col justify-center overflow-hidden bg-gray-50">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-blue-800/20"></div>
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0)_0%,rgba(0,0,0,0.1)_100%)]"></div>
-        </div>
+      {/* Hero Section - Estilo Moderno */}
+      <>
+        {/* Modal Form */}
+        {showForm && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+            <div className="bg-white p-8 rounded-lg w-full max-w-md">
+              <h2 className="text-2xl font-bold mb-4">Solicita un Análisis Gratuito</h2>
+              <form onSubmit={handleSubmit}>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  placeholder="Tu Email"
+                  required
+                  className="border p-2 mb-4 w-full rounded"
+                />
+                <textarea
+                  name="comment"
+                  value={formData.comment}
+                  onChange={handleInputChange}
+                  placeholder="Tu Comentario"
+                  required
+                  className="border p-2 mb-4 w-full rounded h-24"
+                />
+                <div className="flex justify-end">
+                  <button
+                    type="submit"
+                    className="bg-blue-600 text-white px-6 py-3 rounded mr-2"
+                  >
+                    Enviar
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowForm(false)}
+                    className="bg-gray-300 px-6 py-3 rounded"
+                  >
+                    Cancelar
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
 
-        <div className="container mx-auto px-6 relative z-20">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="mb-8">
-              <h1 className="text-4xl font-bold font-poppins text-blue-600">
+        {/* Main Content */}
+        <div className="relative min-h-screen">
+          {/* Barra superior con logo */}
+          <div className="absolute top-0 left-0 right-0 h-20 bg-white/80 backdrop-blur-sm z-30">
+            <div className="container mx-auto px-6 h-full flex items-center">
+              <h1 className="text-2xl font-bold font-poppins text-blue-600">
                 Revalio
               </h1>
             </div>
-            <h1 className="text-6xl md:text-7xl font-bold mb-8 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-              Maximizamos el valor de tu propiedad
-              <span className="block text-blue-600">sin que inviertas un euro</span>
-            </h1>
-            <p className="text-2xl mb-6 text-gray-600 max-w-2xl mx-auto">
-              Convertimos inmuebles en oportunidades: financiamos la reforma,
-              gestionamos el cambio de uso y vendemos por ti.
-            </p>
-            <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6">
-              <div className="mx-auto">
-                <button
-                  className="bg-blue-600 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:bg-blue-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl transition-shadow hover:shadow-xl w-full sm:w-auto"
-                  onClick={() => setShowForm(true)} // Botón para abrir el formulario
-                >
-                  Solicita un análisis gratuito
-                </button>
-                {/* The pop-up form (Modal) */}
-                {showForm && (
-                  <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-                    <div className="bg-white p-8 rounded-lg w-full max-w-md">
-                      <h2 className="text-2xl font-bold mb-4">Solicita un Análisis Gratuito</h2>
-                      <form onSubmit={handleSubmit}>
-                        <input
-                          type="email"
-                          name="email"
-                          value={formData.email}
-                          onChange={handleInputChange}
-                          placeholder="Tu Email"
-                          required
-                          className="border p-2 mb-4 w-full rounded"
-                        />
-                        <textarea
-                          name="comment"
-                          value={formData.comment}
-                          onChange={handleInputChange}
-                          placeholder="Tu Comentario"
-                          required
-                          className="border p-2 mb-4 w-full rounded h-24"
-                        />
-                        <div className="flex justify-end">
-                          <button
-                            type="submit"
-                            className="bg-blue-600 text-white px-6 py-3 rounded mr-2"
-                          >
-                            Enviar
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => setShowForm(false)}
-                            className="bg-gray-300 px-6 py-3 rounded"
-                          >
-                            Cancelar
-                          </button>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
+          </div>
+
+          {/* Fondo con mosaico */}
+          <div className="absolute inset-0 overflow-hidden">
+            {[
+              { type: 'image', top: '15%', left: '10%', size: 'h-20 w-20', src: "/images/Barcelona_Eixample.jpg" },
+              { type: 'square', top: '25%', left: '35%', size: 'h-15 w-15', color: 'bg-blue-400' },
+              { type: 'image', top: '45%', left: '15%', size: 'h-20 w-20', src: "/images/Barcelona_Puerto.jpg" },
+              { type: 'square', top: '60%', left: '25%', size: 'h-10 w-10', color: 'bg-blue-500' },
+              { type: 'image', top: '20%', left: '75%', size: 'h-19 w-19', src: "/images/Madrid_GranVia.jpg" },
+              { type: 'square', top: '40%', left: '85%', size: 'h-8 w-8', color: 'bg-blue-600' },
+              { type: 'image', top: '65%', left: '80%', size: 'h-18 w-18', src: "/images/Bilbao.jpg" },
+              { type: 'square', top: '30%', left: '60%', size: 'h-16 w-16', color: 'bg-gray-200' },
+              { type: 'square', top: '70%', left: '45%', size: 'h-18 w-18', color: 'bg-blue-500' },
+            ].map((element, index) => (
+              <div
+                key={index}
+                className={`absolute ${element.size} rounded-lg transform transition-transform duration-700 hover:scale-110`}
+                style={{
+                  top: element.top,
+                  left: element.left,
+                  transform: `rotate(${Math.random() * 20 - 10}deg)`,
+                }}
+              >
+                {element.type === 'image' ? (
+                  <img
+                    src={element.src || "/api/placeholder/100/100"}
+                    alt={`Cityscape ${index}`}
+                    className="w-full h-full object-cover rounded-lg opacity-99"
+                  />
+                ) : (
+                  <div className={`w-full h-full ${element.color} rounded-lg opacity-90`}></div>
                 )}
               </div>
-            </div>
-          </div>
-        </div>
+            ))}
 
-        <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-white to-transparent z-10"></div>
-      </section>
+            {/* Gradientes sutiles */}
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-blue-800/10"></div>
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.4)_0%,rgba(255,255,255,0.8)_100%)]"></div>
+          </div>
+
+          {/* Contenido principal */}
+          <section className="relative min-h-screen flex flex-col justify-center">
+            <div className="container mx-auto px-6 relative z-20 pt-20">
+              <div className="max-w-4xl mx-auto text-center">
+                <h2 className="text-6xl md:text-7xl font-bold mb-8 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                  Maximizamos el valor de tu propiedad
+                  <span className="block text-blue-600 mt-4">sin que inviertas un euro</span>
+                </h2>
+                <p className="text-2xl mb-6 text-gray-600 max-w-2xl mx-auto">
+                  Convertimos inmuebles en oportunidades: financiamos la reforma,
+                  gestionamos el cambio de uso y vendemos por ti.
+                </p>
+                <div className="flex justify-center">
+                  <button
+                    className="bg-blue-600 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:bg-blue-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl"
+                    onClick={() => setShowForm(true)}
+                  >
+                    Solicita un análisis gratuito
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </>
 
       {/* Stats Section */}
       <section className="py-8 bg-white">
