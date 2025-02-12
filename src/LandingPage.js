@@ -1,45 +1,64 @@
 import React, { useState } from 'react'; // Import useState
-import { useForm } from 'react-hook-form'; // Import useForm
-import { Building2, Award, BarChart3, Clock, CheckCircle2, Euro, LineChart, TrendingUp, Percent, Calendar } from 'lucide-react';
+import { Building2, Award, BarChart3, Clock, CheckCircle2, Euro, LineChart, TrendingUp, Percent, Calendar } from 'lucide-react'; // Import icons for examples section
+import { Wallet, RefreshCw, ClipboardList, Shield, Database } from 'lucide-react'; // Import icons for benefit section
 
 const LandingPage = () => {
+  const [showForm, setShowForm] = useState(false);
+  const [formData, setFormData] = useState({
+    email: '',
+    comment: ''
+  });
+  const formSpreeEndpoint = 'https://formspree.io/f/xbldagdv';
 
-    const [showForm, setShowForm] = useState(false);
-    const { register, handleSubmit, reset } = useForm();
-    const formSpreeEndpoint = 'https://formspree.io/f/xbldagdv'; // Replace with your Formspree endpoint
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
 
-    const onSubmit = async (data) => {
-        try {
-            const response = await fetch(formSpreeEndpoint, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      // Formspree espera los datos en formato FormData
+      const formDataToSend = new FormData();
+      formDataToSend.append('email', formData.email);
+      formDataToSend.append('message', formData.comment);
 
-            if (response.ok) {
-                alert('Message sent successfully!');
-                setShowForm(false);
-                reset();
-            } else {
-                const errorData = await response.json(); // Try to get error details from Formspree
-                alert(`Error sending message: ${errorData?.error || 'Please try again.'}`); // Display a more specific error
-            }
-        } catch (error) {
-            alert('An error occurred. Please try again later.');
+      const response = await fetch(formSpreeEndpoint, {
+        method: 'POST',
+        body: formDataToSend,
+        headers: {
+          'Accept': 'application/json'
         }
-    };
-  
+      });
+
+      if (response.ok) {
+        alert('¡Mensaje enviado exitosamente!');
+        setShowForm(false);
+        setFormData({ email: '', comment: '' });
+      } else {
+        const errorData = await response.json();
+        console.error('Error details:', errorData);
+        alert(`Error al enviar el mensaje: ${errorData?.error || 'Por favor, intenta de nuevo.'}`);
+      }
+    } catch (error) {
+      console.error('Submit error:', error);
+      alert('Ocurrió un error. Por favor, intenta más tarde.');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white">
+
       {/* Hero Section - Estilo Radix */}
       <section className="relative min-h-[60vh] flex flex-col justify-center overflow-hidden bg-gray-50">
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-blue-800/20"></div>
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0)_0%,rgba(0,0,0,0.1)_100%)]"></div>
         </div>
-        
+
         <div className="container mx-auto px-6 relative z-20">
           <div className="max-w-4xl mx-auto text-center">
             <div className="mb-8">
@@ -52,35 +71,64 @@ const LandingPage = () => {
               <span className="block text-blue-600">sin que inviertas un euro</span>
             </h1>
             <p className="text-2xl mb-6 text-gray-600 max-w-2xl mx-auto">
-              Convertimos inmuebles en oportunidades: financiamos la reforma, 
+              Convertimos inmuebles en oportunidades: financiamos la reforma,
               gestionamos el cambio de uso y vendemos por ti.
             </p>
             <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6">
               <div className="mx-auto">
-                <button className="bg-blue-600 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:bg-blue-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl transition-shadow hover:shadow-xl w-full sm:w-auto">
+                <button
+                  className="bg-blue-600 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:bg-blue-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl transition-shadow hover:shadow-xl w-full sm:w-auto"
+                  onClick={() => setShowForm(true)} // Botón para abrir el formulario
+                >
                   Solicita un análisis gratuito
                 </button>
-                  {/* The pop-up form (Modal) */}
-            {showForm && (
-                <div className="fixed top-0 left-0 w-full h-full bg-black/50 flex justify-center items-center z-50"> {/* z-50 for higher stacking */}
-                    <div className="bg-white p-8 rounded-lg w-full max-w-md"> {/* Added max-w-md for responsiveness */}
-                        <h2 className="text-2xl font-bold mb-4">Solicita un Análisis Gratuito</h2> {/* Added a title */}
-                        <form onSubmit={handleSubmit(onSubmit)}>
-                            <input type="email" {...register('email', { required: 'Email is required' })} placeholder="Tu Email" className="border p-2 mb-4 w-full rounded" />
-                            <textarea {...register('comment', { required: 'Comment is required' })} placeholder="Tu Comentario" className="border p-2 mb-4 w-full rounded h-24" /> {/* Added h-24 for height */}
-                            <div className="flex justify-end"> {/* Aligned buttons to the right */}
-                                <button type="submit" className="bg-blue-600 text-white px-6 py-3 rounded mr-2">Enviar</button> {/* Increased padding */}
-                                <button type="button" onClick={() => setShowForm(false)} className="bg-gray-300 px-6 py-3 rounded">Cancelar</button> {/* Increased padding */}
-                            </div>
-                        </form>
+                {/* The pop-up form (Modal) */}
+                {showForm && (
+                  <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+                    <div className="bg-white p-8 rounded-lg w-full max-w-md">
+                      <h2 className="text-2xl font-bold mb-4">Solicita un Análisis Gratuito</h2>
+                      <form onSubmit={handleSubmit}>
+                        <input
+                          type="email"
+                          name="email"
+                          value={formData.email}
+                          onChange={handleInputChange}
+                          placeholder="Tu Email"
+                          required
+                          className="border p-2 mb-4 w-full rounded"
+                        />
+                        <textarea
+                          name="comment"
+                          value={formData.comment}
+                          onChange={handleInputChange}
+                          placeholder="Tu Comentario"
+                          required
+                          className="border p-2 mb-4 w-full rounded h-24"
+                        />
+                        <div className="flex justify-end">
+                          <button
+                            type="submit"
+                            className="bg-blue-600 text-white px-6 py-3 rounded mr-2"
+                          >
+                            Enviar
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setShowForm(false)}
+                            className="bg-gray-300 px-6 py-3 rounded"
+                          >
+                            Cancelar
+                          </button>
+                        </div>
+                      </form>
                     </div>
-                </div>
-            )}
+                  </div>
+                )}
               </div>
             </div>
           </div>
         </div>
-        
+
         <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-white to-transparent z-10"></div>
       </section>
 
@@ -238,44 +286,73 @@ const LandingPage = () => {
       </section>
 
       {/* Benefits Section */}
-      <section className="py-20 bg-gradient-to-br from-blue-600 to-blue-800 text-white">
-        <div className="container mx-auto px-6">
-          <h2 className="text-4xl font-bold text-center mb-16">Beneficios clave</h2>
-          <div className="grid md:grid-cols-3 gap-6">
-            {[
-              {
-                title: "Sin inversión inicial",
-                description: "Nosotros financiamos la transformación y reforma"
-              },
-              {
-                title: "Mayor rentabilidad garantizada",
-                description: "Optimizamos para aumentar el valor de mercado"
-              },
-              {
-                title: "Cambio de uso y revalorización",
-                description: "Convertimos espacios infrautilizados en activos rentables"
-              },
-              {
-                title: "Gestión completa",
-                description: "Nos encargamos de todos los trámites y gestiones"
-              },
-              {
-                title: "Alquiler garantizado",
-                description: "Ingresos asegurados mientras optimizamos"
-              },
-              {
-                title: "Tecnología avanzada",
-                description: "Análisis con IA y big data para maximizar resultados"
-              }
-            ].map((benefit, index) => (
-              <div key={index} className="bg-white/20 p-8 rounded-2xl">
-                <h3 className="text-2xl font-semibold mb-4 text-center">{benefit.title}</h3>
-                <p className="text-white text-center">{benefit.description}</p>
-              </div>
-            ))}
+<section className="py-20 bg-gradient-to-br from-blue-600 to-blue-800 text-white relative overflow-hidden">
+  {/* Background Pattern */}
+  <div className="absolute inset-0 opacity-10">
+    <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0wIDBoNjB2NjBIMHoiLz48cGF0aCBkPSJNMzYgMzRjMC0yLjIxLTEuNzktNC00LTRzLTQgMS43OS00IDQgMS43OSA0IDQgNCAxLjc5IDQgNCA0em0tNCAxNGMtNy43MyAwLTE0LTYuMjctMTQtMTQgMC03LjczIDYuMjctMTQgMTQtMTRzMTQgNi4yNyAxNCAxNGMwIDcuNzMtNi4yNyAxNC0xNCAxNHoiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIyIi8+PC9nPjwvc3ZnPg==')] bg-repeat opacity-20"></div>
+  </div>
+  
+  <div className="container mx-auto px-6 relative">
+    <h2 className="text-4xl font-bold text-center mb-16">
+      Beneficios clave
+      <div className="h-1 w-20 bg-white/40 mx-auto mt-4 rounded-full"></div>
+    </h2>
+    
+    <div className="grid md:grid-cols-3 gap-6">
+      {[
+        {
+          title: "Sin inversión inicial",
+          description: "Nosotros financiamos la transformación y reforma",
+          icon: <Wallet size={28} className="text-white" />
+        },
+        {
+          title: "Mayor rentabilidad garantizada",
+          description: "Optimizamos para aumentar el valor de mercado",
+          icon: <TrendingUp size={28} className="text-white" />
+        },
+        {
+          title: "Cambio de uso y revalorización",
+          description: "Convertimos espacios infrautilizados en activos rentables",
+          icon: <RefreshCw size={28} className="text-white" />
+        },
+        {
+          title: "Gestión completa",
+          description: "Nos encargamos de todos los trámites y gestiones",
+          icon: <ClipboardList size={28} className="text-white" />
+        },
+        {
+          title: "Alquiler garantizado",
+          description: "Ingresos asegurados mientras optimizamos",
+          icon: <Shield size={28} className="text-white" />
+        },
+        {
+          title: "Tecnología avanzada",
+          description: "Análisis con IA y big data para maximizar resultados",
+          icon: <Database size={28} className="text-white" />
+        }
+      ].map((benefit, index) => (
+        <div 
+          key={index} 
+          className="group bg-white/10 backdrop-blur-sm p-8 rounded-2xl 
+                    transition-all duration-300 ease-in-out
+                    hover:bg-white/20 hover:transform hover:-translate-y-1 
+                    hover:shadow-lg hover:shadow-white/10
+                    border border-white/10"
+        >
+          <div className="flex flex-col items-center">
+            <div className="p-3 bg-white/20 rounded-xl mb-6 
+                          group-hover:bg-white/30 transition-colors
+                          group-hover:scale-110 transform duration-300">
+              {benefit.icon}
+            </div>
+            <h3 className="text-2xl font-semibold mb-4 text-center">{benefit.title}</h3>
+            <p className="text-white/90 text-center">{benefit.description}</p>
           </div>
         </div>
-      </section>
+      ))}
+    </div>
+  </div>
+</section>
 
       {/* Call to Action Section */}
       <section className="py-24 bg-gray-50">
@@ -287,7 +364,10 @@ const LandingPage = () => {
               <p className="text-xl mb-8 max-w-2xl mx-auto">
                 Solicita ahora un análisis gratuito y descubre el potencial de tu inmueble en el mercado actual.
               </p>
-              <button className="bg-white text-blue-700 px-8 py-4 rounded-xl font-semibold text-lg hover:bg-gray-100 transition-colors shadow-md hover:shadow-lg">
+              <button
+                className="bg-white text-blue-700 px-8 py-4 rounded-xl font-semibold text-lg hover:bg-gray-100 transition-colors shadow-md hover:shadow-lg"
+                onClick={() => setShowForm(true)} // Botón para abrir el formulario
+              >
                 Quiero un análisis gratuito!
               </button>
             </div>
