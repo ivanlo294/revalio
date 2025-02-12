@@ -243,7 +243,7 @@ const LandingPage = () => {
               {
                 location: "Mollet del Vallès",
                 type: "Piso Residencial",
-                image: "/api/placeholder/600/400",
+                image: "Images/Piso_Mollet.jpg",
                 initial: "90.000€",
                 investment: "25.000€",
                 final: "160.000€",
@@ -253,7 +253,7 @@ const LandingPage = () => {
               {
                 location: "Terrassa",
                 type: "Oficina → Vivienda",
-                image: "/api/placeholder/600/400",
+                image: "Images/Piso_Terrassa.jpg",
                 initial: "110.000€",
                 investment: "40.000€",
                 final: "220.000€",
@@ -263,7 +263,7 @@ const LandingPage = () => {
               {
                 location: "Valencia",
                 type: "División en 2 viviendas",
-                image: "/api/placeholder/600/400",
+                image: "Images/Piso_Valencia.jpg",
                 initial: "220.000€",
                 investment: "90.000€",
                 final: "440.000€",
