@@ -1,7 +1,6 @@
 import React, { useState } from 'react'; // Import useState
 import { Building2, Award, BarChart3, Clock, CheckCircle2, Euro, LineChart, TrendingUp, Percent, Calendar } from 'lucide-react'; // Import icons for examples section
 import { Wallet, RefreshCw, ClipboardList, Shield, Database } from 'lucide-react'; // Import icons for benefit section
-import { Analytics } from '@vercel/analytics/next';
 
 const LandingPage = () => {
   const [showForm, setShowForm] = useState(false);
@@ -105,7 +104,6 @@ const LandingPage = () => {
             <div className="container mx-auto px-6 h-full flex items-center">
               <h1 className="text-2xl font-bold font-poppins text-blue-600">
                 Revalio
-                <Analytics />
               </h1>
             </div>
           </div>
