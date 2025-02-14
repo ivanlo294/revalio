@@ -1,6 +1,10 @@
-import React, { useState } from 'react'; // Import useState
-import { Building2, Award, BarChart3, Clock, CheckCircle2, Euro, LineChart, TrendingUp, Percent, Calendar } from 'lucide-react'; // Import icons for examples section
-import { Wallet, RefreshCw, ClipboardList, Shield, Database } from 'lucide-react'; // Import icons for benefit section
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Building2, Award, BarChart3, Clock, CheckCircle2, Euro, LineChart, TrendingUp, Percent, Calendar } from 'lucide-react';
+import { Wallet, RefreshCw, ClipboardList, Shield, Database } from 'lucide-react';
+import HeroSection from './components/HeroSection';
+import StatsSection from './components/StatsSection';
+import ServicesSection from './components/ServicesSection';
 
 const LandingPage = () => {
   const [showForm, setShowForm] = useState(false);
@@ -21,7 +25,6 @@ const LandingPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Formspree espera los datos en formato FormData
       const formDataToSend = new FormData();
       formDataToSend.append('email', formData.email);
       formDataToSend.append('message', formData.comment);
@@ -49,149 +52,16 @@ const LandingPage = () => {
     }
   };
 
-  return (
+  const MainContent = () => (
     <div className="min-h-screen bg-white">
-
-      {/* Hero Section - Estilo Moderno */}
-      <>
-        {/* Modal Form */}
-        {showForm && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-            <div className="bg-white p-8 rounded-lg w-full max-w-md">
-              <h2 className="text-2xl font-bold mb-4">Solicita un Análisis Gratuito</h2>
-              <form onSubmit={handleSubmit}>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  placeholder="Tu Email"
-                  required
-                  className="border p-2 mb-4 w-full rounded"
-                />
-                <textarea
-                  name="comment"
-                  value={formData.comment}
-                  onChange={handleInputChange}
-                  placeholder="Tu Comentario"
-                  required
-                  className="border p-2 mb-4 w-full rounded h-24"
-                />
-                <div className="flex justify-end">
-                  <button
-                    type="submit"
-                    className="bg-blue-600 text-white px-6 py-3 rounded mr-2"
-                  >
-                    Enviar
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setShowForm(false)}
-                    className="bg-gray-300 px-6 py-3 rounded"
-                  >
-                    Cancelar
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        )}
-
-        {/* Main Content */}
-        <div className="relative min-h-screen">
-          {/* Barra superior con logo */}
-          <div className="absolute top-0 left-0 right-0 h-20 bg-white/80 backdrop-blur-sm z-30">
-            <div className="container mx-auto px-6 h-full flex items-center">
-              <h1 className="text-2xl font-bold font-poppins text-blue-600">
-                Revalio
-              </h1>
-            </div>
-          </div>
-
-          {/* Fondo con mosaico */}
-          <div className="absolute inset-0 overflow-hidden">
-            {[
-              { type: 'image', top: '15%', left: '10%', size: 'h-20 w-20', src: "/Images/Barcelona_Eixample.jpg" },
-              { type: 'square', top: '25%', left: '35%', size: 'h-15 w-15', color: 'bg-blue-400' },
-              { type: 'image', top: '45%', left: '15%', size: 'h-20 w-20', src: "/Images/Barcelona_Puerto.jpg" },
-              { type: 'square', top: '60%', left: '25%', size: 'h-10 w-10', color: 'bg-blue-500' },
-              { type: 'image', top: '20%', left: '75%', size: 'h-19 w-19', src: "/Images/Madrid_GranVia.jpg" },
-              { type: 'square', top: '40%', left: '85%', size: 'h-8 w-8', color: 'bg-blue-600' },
-              { type: 'image', top: '65%', left: '80%', size: 'h-18 w-18', src: "/Images/Bilbao.jpg" },
-              { type: 'square', top: '30%', left: '60%', size: 'h-16 w-16', color: 'bg-gray-200' },
-              { type: 'square', top: '70%', left: '45%', size: 'h-18 w-18', color: 'bg-blue-500' },
-            ].map((element, index) => (
-              <div
-                key={index}
-                className={`absolute ${element.size} rounded-lg transform transition-transform duration-700 hover:scale-110`}
-                style={{
-                  top: element.top,
-                  left: element.left,
-                  transform: `rotate(${Math.random() * 20 - 10}deg)`,
-                }}
-              >
-                {element.type === 'image' ? (
-                  <img
-                    src={element.src || "/api/placeholder/100/100"}
-                    alt={`Cityscape ${index}`}
-                    className="w-full h-full object-cover rounded-lg opacity-99"
-                  />
-                ) : (
-                  <div className={`w-full h-full ${element.color} rounded-lg opacity-90`}></div>
-                )}
-              </div>
-            ))}
-
-            {/* Gradientes sutiles */}
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-blue-800/10"></div>
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.4)_0%,rgba(255,255,255,0.8)_100%)]"></div>
-          </div>
-
-          {/* Contenido principal */}
-          <section className="relative min-h-screen flex flex-col justify-center">
-            <div className="container mx-auto px-6 relative z-20 pt-20">
-              <div className="max-w-4xl mx-auto text-center">
-                <h2 className="text-6xl md:text-7xl font-bold mb-8 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
-                  Maximizamos el valor de tu propiedad
-                  <span className="block text-blue-600 mt-4">sin que inviertas un euro</span>
-                </h2>
-                <p className="text-2xl mb-6 text-gray-600 max-w-2xl mx-auto">
-                  Convertimos inmuebles en oportunidades: financiamos la reforma,
-                  gestionamos el cambio de uso y vendemos por ti.
-                </p>
-                <div className="flex justify-center">
-                  <button
-                    className="bg-blue-600 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:bg-blue-700 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl"
-                    onClick={() => setShowForm(true)}
-                  >
-                    Solicita un análisis gratuito
-                  </button>
-                </div>
-              </div>
-            </div>
-          </section>
-        </div>
-      </>
+      {/* Hero Section */}
+      <HeroSection />
 
       {/* Stats Section */}
-      <section className="py-8 bg-white">
-        <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { number: "150+", label: "Propiedades optimizadas" },
-              { number: "45%", label: "Incremento medio de valor" },
-              { number: "3-9", label: "Meses de proceso" }
-            ].map((stat, index) => (
-              <div key={index} className="text-center">
-                <h3 className="text-4xl font-bold text-blue-600 mb-2">{stat.number}</h3>
-                <p className="text-gray-600">{stat.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* How it Works Section */}
+      <StatsSection />
+	  
+	  
+	        {/* How it Works Section */}
       <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-6">
           <h2 className="text-4xl font-bold text-center mb-4">Cómo funciona</h2>
@@ -416,6 +286,16 @@ const LandingPage = () => {
         </div>
       </section>
     </div>
+  );
+
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<MainContent />} />
+        <Route path="/servicios" element={<ServicesSection />} />
+        {/* Añade aquí otras rutas según necesites */}
+      </Routes>
+    </Router>
   );
 };
 
