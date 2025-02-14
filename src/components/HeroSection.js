@@ -7,7 +7,19 @@ const HeroSection = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
   const [mosaicElements, setMosaicElements] = useState([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Detectar si es móvil al cargar y en resize
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 768); // 768px es el breakpoint md de Tailwind
+    };
+
+    checkIfMobile();
+    window.addEventListener('resize', checkIfMobile);
+    return () => window.removeEventListener('resize', checkIfMobile);
+  }, []);
 
   useEffect(() => {
     const elements = [
@@ -35,17 +47,31 @@ const HeroSection = () => {
   }, []);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrollPosition(window.scrollY);
-    };
+    // Solo aplicar el efecto de scroll en desktop
+    if (!isMobile) {
+      const handleScroll = () => {
+        setScrollPosition(window.scrollY);
+      };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+      window.addEventListener('scroll', handleScroll);
+      return () => window.removeEventListener('scroll', handleScroll);
+    }
+  }, [isMobile]);
 
   const handleServicesClick = () => {
     navigate('/servicios');
     setIsMenuOpen(false);
+  };
+
+  // Calcular los estilos de transformación solo para desktop
+  const getHeroStyles = () => {
+    if (isMobile) {
+      return {}; // Sin efectos en móvil
+    }
+    return {
+      transform: `scale(${1 - scrollPosition / 2000})`,
+      opacity: 1 - scrollPosition / 500
+    };
   };
 
   return (
@@ -123,10 +149,7 @@ const HeroSection = () => {
 
       <div 
         className="hero-container relative min-h-[90vh] md:min-h-[50vh] transition-all duration-500 pt-32 md:pt-20"
-        style={{
-          transform: `scale(${1 - scrollPosition / 2000})`,
-          opacity: 1 - scrollPosition / 500
-        }}
+        style={getHeroStyles()}
       >
         <div className="absolute inset-0 overflow-hidden bg-white/40">
           {mosaicElements.map(element => (
