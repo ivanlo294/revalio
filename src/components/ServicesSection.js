@@ -113,11 +113,15 @@ const ServicesSection = () => {
       <div className="relative h-[70vh] bg-gradient-to-r from-blue-600 to-blue-800 pt-20">
         <div className="absolute inset-0 bg-black/30" />
         <div className="absolute inset-0">
-          <img
-            src="/api/placeholder/1920/1080"
-            alt="Propiedad moderna"
-            className="w-full h-full object-cover"
-          />
+            <video
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="w-full h-full object-cover"
+            >
+                <source src="/Videos/Vesuvio_Time_Lapse.mp4" type="video/mp4" />
+            </video>
         </div>
         <div className="relative h-full flex items-center justify-center text-center px-4">
           <div className="max-w-4xl">
