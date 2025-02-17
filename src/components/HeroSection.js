@@ -228,7 +228,7 @@ const HeroSection = () => {
               style={{ filter: 'brightness(1.0) contrast(1.0)' }}
             >
               {/* Usa formatos optimizados primero */}
-              <source src="/Videos/Vesuvio_Time_Lapse.mp4" type="video/mp4" />
+              <source src="/Videos/Vesuvio_Time_Lapse_Compressed.mp4" type="video/mp4" />
               <source src="/Videos/Vesuvio_Time_Lapse.webm" type="video/webm" />
               {/* Eliminar el mensaje de fallback ya que usaremos una imagen de respaldo */}
             </video>
