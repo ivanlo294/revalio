@@ -5,7 +5,6 @@ import { Menu, X } from 'lucide-react';
 const HeroSection = () => {
   const [showForm, setShowForm] = useState(false);
   const [scrollPosition, setScrollPosition] = useState(0);
-  const [mosaicElements, setMosaicElements] = useState([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const navigate = useNavigate();
@@ -19,31 +18,6 @@ const HeroSection = () => {
     checkIfMobile();
     window.addEventListener('resize', checkIfMobile);
     return () => window.removeEventListener('resize', checkIfMobile);
-  }, []);
-
-  useEffect(() => {
-    const elements = [
-      { type: 'image', src: "/Images/Barcelona_Eixample.jpg" },
-      { type: 'square', color: 'bg-blue-400' },
-      { type: 'image', src: "/Images/Barcelona_Puerto.jpg" },
-      { type: 'square', color: 'bg-blue-500' },
-      { type: 'image', src: "/Images/Madrid_GranVia.jpg" },
-      { type: 'square', color: 'bg-blue-600' },
-      { type: 'image', src: "/Images/Bilbao.jpg" },
-      { type: 'square', color: 'bg-gray-200' },
-      { type: 'square', color: 'bg-blue-500' },
-    ].map((element, index) => ({
-      ...element,
-      id: index,
-      top: Math.random() * 70 + 15,
-      left: Math.random() * 70 + 15,
-      size: element.type === 'image' 
-        ? Math.random() * 40 + 80 
-        : Math.random() * 20 + 40,
-      rotation: Math.random() * 20 - 10,
-    }));
-
-    setMosaicElements(elements);
   }, []);
 
   useEffect(() => {
@@ -151,48 +125,32 @@ const HeroSection = () => {
         className="hero-container relative min-h-[90vh] md:min-h-[50vh] transition-all duration-500 pt-32 md:pt-20"
         style={getHeroStyles()}
       >
-        <div className="absolute inset-0 overflow-hidden bg-white/40">
-          {mosaicElements.map(element => (
-            <div
-              key={element.id}
-              className="absolute rounded-lg transform transition-transform duration-700 hover:scale-110"
-              style={{
-                top: `${element.top}%`,
-                left: `${element.left}%`,
-                width: `${element.size}px`,
-                height: `${element.size}px`,
-                transform: `rotate(${element.rotation}deg)`,
-              }}
+        <div className="absolute inset-0 overflow-hidden">
+          {/* Video background */}
+          <div className="absolute w-full h-full">
+            <video 
+              autoPlay 
+              loop 
+              muted 
+              className="absolute w-full h-full object-cover"
+              playsInline 
+              disablePictureInPicture
+              style={{ filter: 'brightness(1.0) contrast(1.0)' }}
             >
-              {element.type === 'image' ? (
-                <div className="relative w-full h-full">
-                  <img 
-                    src={element.src} 
-                    alt="Cityscape" 
-                    className="w-full h-full object-cover rounded-lg"
-                    style={{
-                      opacity: 0.6,
-                      mixBlendMode: 'multiply'
-                    }} 
-                  />
-                </div>
-              ) : (
-                <div 
-                  className={`w-full h-full ${element.color} rounded-lg`}
-                  style={{ opacity: 0.2 }}
-                ></div>
-              )}
-            </div>
-          ))}
+              <source src="/Videos/Vesuvio_Time_Lapse.mp4" type="video/mp4" />
+              Tu navegador no soporta el tag de video.
+            </video>
+            <div className="absolute inset-0 bg-blue-900/20 mix-blend-multiply"></div>
+          </div>
         </div>
 
         <section className="relative flex flex-col justify-center md:h-[50vh] text-center px-4">
           <div className="container mx-auto px-4 md:px-6 relative z-20 py-12 md:pt-20">
-            <h2 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+            <h2 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white to-gray-200 bg-clip-text text-transparent">
               Maximizamos el valor de tu propiedad
-              <span className="block text-blue-600 mt-4">sin que inviertas un euro</span>
+              <span className="block text-blue-300 mt-4">sin que inviertas un euro</span>
             </h2>
-            <p className="text-lg md:text-xl mb-8 text-gray-600 max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl mb-8 text-white max-w-2xl mx-auto">
               Convertimos inmuebles en oportunidades: financiamos la reforma, gestionamos el cambio de uso y vendemos por ti.
             </p>
             <div className="flex justify-center mb-8 md:mb-0">

@@ -120,7 +120,7 @@ const ServicesSection = () => {
                 playsInline
                 className="w-full h-full object-cover"
             >
-                <source src="/Videos/Vesuvio_Time_Lapse.mp4" type="video/mp4" />
+                <source src="/Videos/Seoul_Time_Lapse.mp4" type="video/mp4" />
             </video>
         </div>
         <div className="relative h-full flex items-center justify-center text-center px-4">
