@@ -5,6 +5,7 @@ import { Wallet, RefreshCw, ClipboardList, Shield, Database } from 'lucide-react
 import HeroSection from './components/HeroSection';
 import StatsSection from './components/StatsSection';
 import ServicesSection from './components/ServicesSection';
+import { SpeedInsights } from "@vercel/speed-insights/react"
 
 const LandingPage = () => {
   const [showForm, setShowForm] = useState(false);
@@ -107,6 +108,7 @@ const LandingPage = () => {
           <h2 className="text-4xl font-bold text-center mb-4">Casos de éxito</h2>
           <p className="text-xl text-gray-600 text-center mb-16 max-w-2xl mx-auto">
             Descubre cómo hemos ayudado a otros propietarios a maximizar el valor de sus inmuebles
+            <SpeedInsights />
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {[
