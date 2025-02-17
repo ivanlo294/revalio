@@ -8,6 +8,7 @@ const HeroSection = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [videoLoaded, setVideoLoaded] = useState(false);
+  const [videoPlaying, setVideoPlaying] = useState(false);
   const videoRef = useRef(null);
   const navigate = useNavigate();
 
@@ -39,20 +40,69 @@ const HeroSection = () => {
     if (videoRef.current) {
       const handleLoadedData = () => {
         setVideoLoaded(true);
+        // Intenta reproducir el video después de que los datos estén cargados
+        playVideo();
+      };
+      
+      const handlePlaying = () => {
+        setVideoPlaying(true);
+      };
+      
+      const handleError = (error) => {
+        console.error("Error loading video:", error);
+        // Asegúrate de mostrar una imagen de respaldo
+        setVideoLoaded(false);
+      };
+      
+      const playVideo = async () => {
+        try {
+          // En móviles, especialmente iOS, play() debe ser llamado como resultado de una interacción del usuario
+          // o dentro de un evento controlado por el navegador como pageshow
+          if (videoRef.current) {
+            await videoRef.current.play();
+          }
+        } catch (error) {
+          console.warn("Auto-play was prevented:", error);
+          // Si autoplay falla, podemos mostrar un botón de play o simplemente usar una imagen estática
+        }
       };
       
       videoRef.current.addEventListener('loadeddata', handleLoadedData);
+      videoRef.current.addEventListener('playing', handlePlaying);
+      videoRef.current.addEventListener('error', handleError);
       
       // Empezar a cargar el video
       videoRef.current.load();
       
+      // Intenta reproducir el video cuando el componente se monta
+      playVideo();
+      
       return () => {
         if (videoRef.current) {
           videoRef.current.removeEventListener('loadeddata', handleLoadedData);
+          videoRef.current.removeEventListener('playing', handlePlaying);
+          videoRef.current.removeEventListener('error', handleError);
         }
       };
     }
   }, []);
+
+  // Verifica si el video está pausado y reinicia la reproducción cuando el usuario regresa a la página
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible' && videoRef.current && videoLoaded) {
+        videoRef.current.play().catch((error) => {
+          console.warn("Could not resume video playback:", error);
+        });
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [videoLoaded]);
 
   const handleServicesClick = () => {
     navigate('/servicios');
@@ -69,6 +119,9 @@ const HeroSection = () => {
       opacity: 1 - scrollPosition / 500
     };
   };
+
+  // Imagen de respaldo para cuando el video no carga
+  const fallbackImageUrl = '/Images/hero-fallback.jpg'; // Asegúrate de tener esta imagen
 
   return (
     <>
@@ -148,8 +201,15 @@ const HeroSection = () => {
         style={getHeroStyles()}
       >
         <div className="absolute inset-0 overflow-hidden">
-          {/* Video background with loading placeholder */}
+          {/* Video background with loading placeholder and fallback image */}
           <div className="absolute w-full h-full">
+            {/* Fallback image always present, hidden when video is playing */}
+            <div 
+              className={`absolute w-full h-full bg-cover bg-center transition-opacity duration-500 ${videoPlaying ? 'opacity-0' : 'opacity-100'}`}
+              style={{ backgroundImage: `url(${fallbackImageUrl})` }}
+            ></div>
+            
+            {/* Loading spinner */}
             {!videoLoaded && (
               <div className="absolute w-full h-full bg-blue-900/40 flex items-center justify-center">
                 <div className="animate-pulse bg-blue-600/20 h-32 w-32 rounded-full"></div>
@@ -162,15 +222,15 @@ const HeroSection = () => {
               loop 
               muted 
               preload="auto"
-              className={`absolute w-full h-full object-cover transition-opacity duration-500 ${videoLoaded ? 'opacity-100' : 'opacity-0'}`}
+              className={`absolute w-full h-full object-cover transition-opacity duration-500 ${videoPlaying ? 'opacity-100' : 'opacity-0'}`}
               playsInline 
               disablePictureInPicture
               style={{ filter: 'brightness(1.0) contrast(1.0)' }}
             >
               {/* Usa formatos optimizados primero */}
-              <source src="/Videos/Vesuvio_Time_Lapse.webm" type="video/webm" />
               <source src="/Videos/Vesuvio_Time_Lapse.mp4" type="video/mp4" />
-              Tu navegador no soporta el tag de video.
+              <source src="/Videos/Vesuvio_Time_Lapse.webm" type="video/webm" />
+              {/* Eliminar el mensaje de fallback ya que usaremos una imagen de respaldo */}
             </video>
             <div className="absolute inset-0 bg-blue-900/20 mix-blend-multiply"></div>
           </div>
