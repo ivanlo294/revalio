@@ -11,7 +11,7 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-8">
           {/* Logo y enlaces de contacto */}
           <div className="flex flex-col items-center md:items-start space-y-4">
-            <Link to="/" className="text-2xl font-bold text-white">Revalio</Link>
+            <Link to="/" className="text-2xl font-bold text-blue-600">Revalio</Link>
             <p className="text-gray-300">contacto@revalio.es</p>
             <p className="text-sm text-gray-400">Copyright © {currentYear} Revalio. Todos los derechos reservados.</p>
           </div>
@@ -26,7 +26,7 @@ const Footer = () => {
               <span>Enviar email</span>
             </a>
             <a
-              href="https://cal.com/contacto@revalio.es"
+              href="https://cal.com/revalio"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center space-x-2 bg-blue-600 text-white px-6 py-3 rounded-xl font-medium transition-all duration-300 hover:bg-blue-700 hover:shadow-md w-full sm:w-auto justify-center"
