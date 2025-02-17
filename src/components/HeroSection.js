@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 
@@ -7,6 +7,8 @@ const HeroSection = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
+  const videoRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,6 +33,26 @@ const HeroSection = () => {
       return () => window.removeEventListener('scroll', handleScroll);
     }
   }, [isMobile]);
+
+  useEffect(() => {
+    // Pre-cargar el video antes de la interacción del usuario
+    if (videoRef.current) {
+      const handleLoadedData = () => {
+        setVideoLoaded(true);
+      };
+      
+      videoRef.current.addEventListener('loadeddata', handleLoadedData);
+      
+      // Empezar a cargar el video
+      videoRef.current.load();
+      
+      return () => {
+        if (videoRef.current) {
+          videoRef.current.removeEventListener('loadeddata', handleLoadedData);
+        }
+      };
+    }
+  }, []);
 
   const handleServicesClick = () => {
     navigate('/servicios');
@@ -126,17 +148,27 @@ const HeroSection = () => {
         style={getHeroStyles()}
       >
         <div className="absolute inset-0 overflow-hidden">
-          {/* Video background */}
+          {/* Video background with loading placeholder */}
           <div className="absolute w-full h-full">
+            {!videoLoaded && (
+              <div className="absolute w-full h-full bg-blue-900/40 flex items-center justify-center">
+                <div className="animate-pulse bg-blue-600/20 h-32 w-32 rounded-full"></div>
+              </div>
+            )}
+            
             <video 
+              ref={videoRef}
               autoPlay 
               loop 
               muted 
-              className="absolute w-full h-full object-cover"
+              preload="auto"
+              className={`absolute w-full h-full object-cover transition-opacity duration-500 ${videoLoaded ? 'opacity-100' : 'opacity-0'}`}
               playsInline 
               disablePictureInPicture
               style={{ filter: 'brightness(1.0) contrast(1.0)' }}
             >
+              {/* Usa formatos optimizados primero */}
+              <source src="/Videos/Vesuvio_Time_Lapse.webm" type="video/webm" />
               <source src="/Videos/Vesuvio_Time_Lapse.mp4" type="video/mp4" />
               Tu navegador no soporta el tag de video.
             </video>
