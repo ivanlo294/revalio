@@ -5,7 +5,8 @@ import { Wallet, RefreshCw, ClipboardList, Shield, Database } from 'lucide-react
 import HeroSection from './components/HeroSection';
 import StatsSection from './components/StatsSection';
 import ServicesSection from './components/ServicesSection';
-import { SpeedInsights } from "@vercel/speed-insights/react"
+import { SpeedInsights } from "@vercel/speed-insights/react";
+import Footer from './components/Footer';
 
 const LandingPage = () => {
   const [showForm, setShowForm] = useState(false);
@@ -55,6 +56,7 @@ const LandingPage = () => {
 
   const MainContent = () => (
     <div className="min-h-screen bg-white">
+
       {/* Hero Section */}
       <HeroSection />
 
@@ -287,6 +289,10 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
+      
+      {/* Footer Section */}
+      <Footer />
+
     </div>
   );
 
