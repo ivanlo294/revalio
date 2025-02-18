@@ -7,12 +7,17 @@ const HeroSection = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isIOS, setIsIOS] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Detectar si es móvil al cargar y en resize
+    // Detectar si es móvil y si es iOS al cargar y en resize
     const checkIfMobile = () => {
       setIsMobile(window.innerWidth < 768); // 768px es el breakpoint md de Tailwind
+      
+      // Detección de iOS
+      const userAgent = window.navigator.userAgent.toLowerCase();
+      setIsIOS(/iphone|ipad|ipod|mac/.test(userAgent));
     };
 
     checkIfMobile();
@@ -125,18 +130,33 @@ const HeroSection = () => {
         className="hero-container relative min-h-[90vh] md:min-h-[50vh] transition-all duration-500 pt-32 md:pt-20"
         style={getHeroStyles()}
       >
-        {/* Video background - Estructura simplificada exactamente como en ServicesSection */}
+        {/* Background condicional: GIF para iOS, video para el resto */}
         <div className="absolute inset-0">
-            <video
+          {isIOS ? (
+            // Fondo GIF para iOS
+            <div className="w-full h-full">
+              <img
+                src="/Images/Vesuvio_Time_Lapse_Compressed.gif"
+                alt="Time lapse de Vesuvio"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-blue-900/30"></div>
+            </div>
+          ) : (
+            // Video background para otras plataformas
+            <>
+              <video
                 autoPlay
                 muted
                 loop
                 playsInline
                 className="w-full h-full object-cover"
-            >
+              >
                 <source src="/Videos/Vesuvio_Time_Lapse_Compressed.mp4" type="video/mp4" />
-            </video>
-            <div className="absolute inset-0 bg-blue-900/30"></div>
+              </video>
+              <div className="absolute inset-0 bg-blue-900/30"></div>
+            </>
+          )}
         </div>
 
         <section className="relative flex flex-col justify-center md:h-[50vh] text-center px-4">
