@@ -7,6 +7,7 @@ import StatsSection from './components/StatsSection';
 import ServicesSection from './components/ServicesSection';
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import Footer from './components/Footer';
+import HowItWorksSection from './components/HowItWorksSection';
 
 const LandingPage = () => {
   const [showForm, setShowForm] = useState(false);
@@ -65,44 +66,7 @@ const LandingPage = () => {
 	  
 	  
 	        {/* How it Works Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-6">
-          <h2 className="text-4xl font-bold text-center mb-4">Cómo funciona</h2>
-          <p className="text-xl text-gray-600 text-center mb-16 max-w-2xl mx-auto">
-            Transformamos tu propiedad en una inversión más rentable en cuatro simples pasos
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-2xl mx-auto">
-            {[
-              {
-                icon: <Building2 className="w-16 h-16 text-blue-600" />,
-                title: "Análisis y estrategia",
-                description: "Evaluamos el potencial de tu activo y diseñamos la mejor estrategia para revalorizarlo."
-              },
-              {
-                icon: <Award className="w-16 h-16 text-blue-600" />,
-                title: "Cambio de uso o reforma",
-                description: "Gestionamos el cambio de uso y optimizamos cada detalle de la reforma."
-              },
-              {
-                icon: <BarChart3 className="w-16 h-16 text-blue-600" />,
-                title: "Financiación sin inversión",
-                description: "Nos encargamos de la inversión sin que tengas que adelantar dinero."
-              },
-              {
-                icon: <Clock className="w-16 h-16 text-blue-600" />,
-                title: "Venta optimizada",
-                description: "Comercializamos tu activo al mejor precio, asegurando la máxima rentabilidad."
-              }
-            ].map((step, index) => (
-              <div key={index} className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-                <div className="mb-6 flex justify-center">{step.icon}</div>
-                <h3 className="text-2xl font-semibold mb-4 text-center">{step.title}</h3>
-                <p className="text-gray-600 text-center">{step.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+     <HowItWorksSection />
 
       {/* Success Cases Section */}
       <section className="py-20 bg-white">
