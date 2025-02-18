@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 
@@ -7,7 +7,6 @@ const HeroSection = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const videoRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -32,22 +31,6 @@ const HeroSection = () => {
       return () => window.removeEventListener('scroll', handleScroll);
     }
   }, [isMobile]);
-
-  // Simplificado: solo manejar visibilidad para reanudar el video
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === 'visible' && videoRef.current) {
-        videoRef.current.play().catch(error => {
-          console.warn("Could not resume video playback:", error);
-        });
-      }
-    };
-
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-    };
-  }, []);
 
   const handleServicesClick = () => {
     navigate('/servicios');
@@ -146,7 +129,7 @@ const HeroSection = () => {
         style={getHeroStyles()}
       >
         <div className="absolute inset-0 overflow-hidden">
-          {/* Video background con imagen de respaldo simplificada */}
+          {/* Video background con imagen de respaldo */}
           <div className="absolute w-full h-full">
             {/* Fallback image that's always visible with low opacity */}
             <div 
@@ -159,7 +142,6 @@ const HeroSection = () => {
             
             {/* Video simplificado similar a ServicesSection */}
             <video 
-              ref={videoRef}
               autoPlay 
               loop 
               muted 
@@ -169,7 +151,6 @@ const HeroSection = () => {
               style={{ filter: 'brightness(1.0) contrast(1.0)' }}
             >
               <source src="/Videos/Vesuvio_Time_Lapse_Compressed.mp4" type="video/mp4" />
-              <source src="/Videos/Vesuvio_Time_Lapse.webm" type="video/webm" />
             </video>
             <div className="absolute inset-0 bg-blue-900/20 mix-blend-multiply"></div>
           </div>
