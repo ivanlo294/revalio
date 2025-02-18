@@ -48,9 +48,6 @@ const HeroSection = () => {
     };
   };
 
-  // Imagen de respaldo para cuando el video no carga
-  const fallbackImageUrl = '/Images/hero-fallback.jpg'; // Asegúrate de tener esta imagen
-
   return (
     <>
       {showForm && (
@@ -128,32 +125,18 @@ const HeroSection = () => {
         className="hero-container relative min-h-[90vh] md:min-h-[50vh] transition-all duration-500 pt-32 md:pt-20"
         style={getHeroStyles()}
       >
-        <div className="absolute inset-0 overflow-hidden">
-          {/* Video background con imagen de respaldo */}
-          <div className="absolute w-full h-full">
-            {/* Fallback image that's always visible with low opacity */}
-            <div 
-              className="absolute w-full h-full bg-cover bg-center"
-              style={{ 
-                backgroundImage: `url(${fallbackImageUrl})`,
-                opacity: 0.3
-              }}
-            ></div>
-            
-            {/* Video simplificado similar a ServicesSection */}
-            <video 
-              autoPlay 
-              loop 
-              muted 
-              playsInline
-              className="absolute w-full h-full object-cover"
-              disablePictureInPicture
-              style={{ filter: 'brightness(1.0) contrast(1.0)' }}
+        {/* Video background - Estructura simplificada exactamente como en ServicesSection */}
+        <div className="absolute inset-0">
+            <video
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="w-full h-full object-cover"
             >
-              <source src="/Videos/Vesuvio_Time_Lapse_Compressed.mp4" type="video/mp4" />
+                <source src="/Videos/Vesuvio_Time_Lapse_Compressed.mp4" type="video/mp4" />
             </video>
-            <div className="absolute inset-0 bg-blue-900/20 mix-blend-multiply"></div>
-          </div>
+            <div className="absolute inset-0 bg-blue-900/30"></div>
         </div>
 
         <section className="relative flex flex-col justify-center md:h-[50vh] text-center px-4">
