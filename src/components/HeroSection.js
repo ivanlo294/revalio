@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 
@@ -8,28 +8,30 @@ const HeroSection = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
+  const videoRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Detectar si es móvil y si es iOS al cargar y en resize
-    const checkIfMobile = () => {
-      setIsMobile(window.innerWidth < 768); // 768px es el breakpoint md de Tailwind
+    // Detección de dispositivo y plataforma
+    const checkDevice = () => {
+      setIsMobile(window.innerWidth < 768);
       
-      // Detección de iOS
+      // Detección de iOS mejorada
       const userAgent = window.navigator.userAgent.toLowerCase();
-      setIsIOS(/iphone|ipad|ipod|mac/.test(userAgent));
+      const isIOSDevice = /iphone|ipad|ipod|mac/.test(userAgent);
+      setIsIOS(isIOSDevice);
     };
 
-    checkIfMobile();
-    window.addEventListener('resize', checkIfMobile);
-    return () => window.removeEventListener('resize', checkIfMobile);
+    checkDevice();
+    window.addEventListener('resize', checkDevice);
+    return () => window.removeEventListener('resize', checkDevice);
   }, []);
 
+  // Optimización de scroll
   useEffect(() => {
-    // Solo aplicar el efecto de scroll en desktop
     if (!isMobile) {
       const handleScroll = () => {
-        setScrollPosition(window.scrollY);
+        setScrollPosition(Math.min(window.scrollY, 500));
       };
 
       window.addEventListener('scroll', handleScroll);
@@ -37,23 +39,31 @@ const HeroSection = () => {
     }
   }, [isMobile]);
 
-  const handleServicesClick = () => {
-    navigate('/servicios');
-    setIsMenuOpen(false);
-  };
-
-  // Calcular los estilos de transformación solo para desktop
+  // Transformaciones de scroll optimizadas
   const getHeroStyles = () => {
-    if (isMobile) {
-      return {}; // Sin efectos en móvil
-    }
+    if (isMobile) return {}; 
+    
+    const scale = Math.max(0.5, 1 - scrollPosition / 2000);
+    const opacity = Math.max(0.2, 1 - scrollPosition / 500);
+    
     return {
-      transform: `scale(${1 - scrollPosition / 2000})`,
-      opacity: 1 - scrollPosition / 500
+      transform: `scale(${scale})`,
+      opacity: opacity
     };
   };
 
-  return (
+  // Optimización de carga de multimedia
+  useEffect(() => {
+    const mediaElement = videoRef.current;
+    if (mediaElement) {
+      mediaElement.preload = 'metadata';
+      mediaElement.onerror = () => {
+        console.error('Error loading media');
+      };
+    }
+  }, [isIOS]);
+  
+    return (
     <>
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
@@ -125,34 +135,50 @@ const HeroSection = () => {
           </nav>
         </div>
       )}
-
+	  
       <div 
         className="hero-container relative min-h-[90vh] md:min-h-[50vh] transition-all duration-500 pt-32 md:pt-20"
         style={getHeroStyles()}
       >
-        {/* Background condicional: GIF para iOS, video para el resto */}
         <div className="absolute inset-0">
           {isIOS ? (
-            // Fondo GIF para iOS
+            // Optimización para GIF en iOS
             <div className="w-full h-full">
               <img
-                src="/Images/Vesuvio_Time_Lapse_Compressed.gif"
+                src="/Images/Vesuvio_Time_Lapse_Compressed.webp" // Cambio a WebP
                 alt="Time lapse de Vesuvio"
+                loading="lazy"
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-blue-900/30"></div>
             </div>
           ) : (
-            // Video background para otras plataformas
+            // Video para otros navegadores
             <>
               <video
+                ref={videoRef}
                 autoPlay
                 muted
                 loop
                 playsInline
+                preload="metadata"
+                poster="/Images/Vesuvio_Poster.jpg"
                 className="w-full h-full object-cover"
               >
-                <source src="/Videos/Vesuvio_Time_Lapse_Compressed.mp4" type="video/mp4" />
+                <source 
+                  src="/Videos/Vesuvio_Time_Lapse_Compressed.webm" 
+                  type="video/webm" 
+                />
+                <source 
+                  src="/Videos/Vesuvio_Time_Lapse_Compressed.mp4" 
+                  type="video/mp4" 
+                />
+                {/* Fallback image */}
+                <img 
+                  src="/Images/Vesuvio_Fallback.jpg" 
+                  alt="Fondo de Revalio"
+                  className="w-full h-full object-cover" 
+                />
               </video>
               <div className="absolute inset-0 bg-blue-900/30"></div>
             </>
