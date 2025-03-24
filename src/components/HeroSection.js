@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 
 const HeroSection = () => {
@@ -7,15 +7,11 @@ const HeroSection = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [isIOS, setIsIOS] = useState(false);
   const videoRef = useRef(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const checkDevice = () => {
       setIsMobile(window.innerWidth < 768);
-      const isIOSDevice = /iphone|ipad|ipod|mac/.test(window.navigator.userAgent.toLowerCase());
-      setIsIOS(isIOSDevice);
     };
 
     checkDevice();
@@ -42,12 +38,16 @@ const HeroSection = () => {
   };
 
   useEffect(() => {
-    const mediaElement = videoRef.current;
-    if (mediaElement) {
-      mediaElement.preload = 'metadata';
-      mediaElement.onerror = () => console.error('Error loading media');
+    // Precarga dinámica del video en dispositivos
+    const videoSource = isMobile
+      ? "/Videos/Vesuvio_Time_Lapse_Mobile.mp4" // Video optimizado para móviles
+      : "/Videos/Vesuvio_Time_Lapse_Compressed.mp4";
+
+    if (videoRef.current) {
+      videoRef.current.src = videoSource;
+      videoRef.current.load();
     }
-  }, [isIOS]);
+  }, [isMobile]);
 
   return (
     <>
@@ -84,35 +84,29 @@ const HeroSection = () => {
           <nav className="flex flex-col items-center space-y-6 p-6">
             <Link to="/" className="text-gray-700 hover:text-blue-600 text-lg" onClick={() => setIsMenuOpen(false)}>Inicio</Link>
             <Link to="/servicios" className="text-gray-700 hover:text-blue-600 text-lg" onClick={() => setIsMenuOpen(false)}>Servicios</Link>
-            <button
-              className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold text-lg hover:bg-blue-700 transition-all w-full"
-              onClick={() => {
-                setIsMenuOpen(false);
-                setShowForm(true);
-              }}
-            >
-              Contacto
-            </button>
+            <button className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold text-lg hover:bg-blue-700 transition-all w-full" onClick={() => { setIsMenuOpen(false); setShowForm(true); }}>Contacto</button>
           </nav>
         </div>
       )}
 
       <div className="hero-container relative min-h-[90vh] md:min-h-[50vh] transition-all duration-500 pt-32 md:pt-20" style={getHeroStyles()}>
         <div className="absolute inset-0">
-          {isIOS ? (
-            <div className="w-full h-full">
-              <img src="/Images/Vesuvio_Time_Lapse_Compressed.webp" alt="Time lapse de Vesuvio" className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-blue-900/30"></div>
-            </div>
-          ) : (
-            <>
-              <video ref={videoRef} autoPlay muted loop playsInline preload="metadata" poster="/Images/Vesuvio_Poster.jpg" className="w-full h-full object-cover">
-                <source src="/Videos/Vesuvio_Time_Lapse_Compressed.webm" type="video/webm" />
-                <source src="/Videos/Vesuvio_Time_Lapse_Compressed.mp4" type="video/mp4" />
-              </video>
-              <div className="absolute inset-0 bg-blue-900/30"></div>
-            </>
-          )}
+          <video
+            ref={videoRef}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            poster="/Images/Vesuvio_Poster.jpg"
+            className="w-full h-full object-cover"
+          >
+            <source src="/Videos/Vesuvio_Time_Lapse_Compressed.webm" type="video/webm" />
+            <source src="/Videos/Vesuvio_Time_Lapse_Compressed.mp4" type="video/mp4" />
+            {/* Imagen de respaldo */}
+            <img src="/Images/Vesuvio_Time_Lapse_Compressed.webp" alt="Fondo de Revalio" className="w-full h-full object-cover" />
+          </video>
+          <div className="absolute inset-0 bg-blue-900/30"></div>
         </div>
         <section className="relative flex flex-col justify-center md:h-[50vh] text-center px-4">
           <div className="container mx-auto px-4 md:px-6 relative z-20 py-12 md:pt-20">
