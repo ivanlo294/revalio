@@ -98,7 +98,7 @@ const HeroSection = () => {
             loop
             playsInline
             preload="metadata"
-            poster="/Images/Vesuvio_Poster.jpg"
+            poster="/Images/Vesuvio_Poster.webp"
             className="w-full h-full object-cover"
           >
             <source src="/Videos/Vesuvio_Time_Lapse_Compressed.webm" type="video/webm" />
